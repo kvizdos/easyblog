@@ -1,0 +1,4 @@
+InputDirectory: ./example
+OGImageConfig:
+  IconPath: "./example/og/icon.jpg"
+  FontPath: "./example/og/regular.ttf"
