@@ -21,6 +21,7 @@ type Post struct {
 	Summary    string
 	OGImageURL string
 	Author     string
+	ToC        template.HTML
 }
 
 type PostMetadata struct {

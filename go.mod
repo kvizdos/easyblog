@@ -14,6 +14,7 @@ require (
 	github.com/yuin/goldmark v1.7.8 // indirect
 	github.com/yuin/goldmark-meta v1.1.0 // indirect
 	go.abhg.dev/goldmark/anchor v0.2.0 // indirect
+	go.abhg.dev/goldmark/toc v0.11.0 // indirect
 	golang.org/x/image v0.25.0 // indirect
 	gopkg.in/yaml.v2 v2.3.0 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect

@@ -37,6 +37,8 @@ github.com/yuin/goldmark-meta v1.1.0 h1:pWw+JLHGZe8Rk0EGsMVssiNb/AaPMHfSRszZeUei
 github.com/yuin/goldmark-meta v1.1.0/go.mod h1:U4spWENafuA7Zyg+Lj5RqK/MF+ovMYtBvXi1lBb2VP0=
 go.abhg.dev/goldmark/anchor v0.2.0 h1:RQZTodRc6VHSUoQYKFlyH0pokbhk1klwUuGgDmjGp2E=
 go.abhg.dev/goldmark/anchor v0.2.0/go.mod h1:Ym74zBV+QBKxK9ITOty680N9FT8otgGYvtYXroJUWms=
+go.abhg.dev/goldmark/toc v0.11.0 h1:IRixVy3/yVPKvFBc37EeBPi8XLTXrtH6BYaonSjkF8o=
+go.abhg.dev/goldmark/toc v0.11.0/go.mod h1:XMFIoI1Sm6dwF9vKzVDOYE/g1o5BmKXghLG8q/wJNww=
 golang.org/x/image v0.25.0 h1:Y6uW6rH1y5y/LK1J8BPWZtr6yZ7hrsy6hFrXjgsc2fQ=
 golang.org/x/image v0.25.0/go.mod h1:tCAmOEGthTtkalusGp1g3xa2gke8J6c2N565dTyl9Rs=
 gopkg.in/check.v1 v0.0.0-20161208181325-20d25e280405/go.mod h1:Co6ibVJAznAaIkqp8huTwlJQCZ016jof/cbN4VW5Yz0=
