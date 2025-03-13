@@ -93,6 +93,13 @@ func (b *Builder) setupOutDirectory() {
 			panic(err)
 		}
 	}
+
+	// Once the scaffold is ready, copy assets from Config.AssetsSource to out/assets.
+	assetsSrc := filepath.Join(b.Config.InputDirectory, "assets")
+	assetsDst := filepath.Join(outDir, "assets")
+	if err := copyDir(assetsSrc, assetsDst); err != nil {
+		panic(fmt.Sprintf("error copying assets: %v", err))
+	}
 }
 
 func (b *Builder) scanForMarkdownFiles(inputDirectory string) (<-chan Post, <-chan PostMetadata) {

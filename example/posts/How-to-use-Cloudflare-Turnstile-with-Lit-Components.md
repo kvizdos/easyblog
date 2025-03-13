@@ -10,7 +10,7 @@ Cloudflare Turnstile is a CAPTCHA alternative designed to protect websites from 
 
 If you've ever seen one of the following pages, you've used Turnstile before:
 
-![Cloudflare Turnstile on a Web Page](https://kentonvizdos.com/content/images/2024/10/image.png)
+![Cloudflare Turnstile on a Web Page](/assets/nested/test-image.jpg)
 (credit: https://www.reddit.com/r/webscraping/comments/16hcde6/how_to_deal_with_cloudflare_human_verification/).
 
 ## What makes it so hard to use with LitJS / web components?
