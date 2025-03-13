@@ -4,39 +4,71 @@ import (
 	"bytes"
 	"fmt"
 	"html/template"
-	"log"
 	"os"
 	"strings"
 
+	figure "github.com/mangoumbrella/goldmark-figure"
 	"github.com/yuin/goldmark"
+	meta "github.com/yuin/goldmark-meta"
 	"github.com/yuin/goldmark/extension"
+	"github.com/yuin/goldmark/parser"
+	"go.abhg.dev/goldmark/anchor"
 )
 
-func ParsePost(postsChan chan<- Post, inputDirectory string, fileName string) {
-	postMd, err := os.ReadFile(fmt.Sprintf("%s/%s", inputDirectory, fileName))
+type customTexter struct{}
+
+func (*customTexter) AnchorText(h *anchor.HeaderInfo) []byte {
+	if h.Level == 1 {
+		return nil
+	}
+	return []byte("#")
+}
+
+func ParsePost(postsChan chan<- Post, metadataChan chan<- PostMetadata, config Config, fileName string) {
+	postMd, err := os.ReadFile(fmt.Sprintf("%s/posts/%s", config.InputDirectory, fileName))
 	if err != nil {
 		fmt.Printf("Error opening file: %v\n", err)
 		return
 	}
 
 	md := goldmark.New(
-		goldmark.WithExtensions(extension.GFM),
+		goldmark.WithParserOptions(
+			parser.WithAutoHeadingID(), // read note
+		),
+		goldmark.WithExtensions(extension.GFM, meta.Meta, figure.Figure, &anchor.Extender{
+			Attributer: anchor.Attributes{
+				"class": "headerPermalink",
+			},
+			Texter: &customTexter{},
+		}),
 	)
 
 	var buf bytes.Buffer
 
-	// Convert Markdown to HTML.
-	if err := md.Convert(postMd, &buf); err != nil {
-		log.Fatal(err)
+	context := parser.NewContext()
+	if err := md.Convert(postMd, &buf, parser.WithContext(context)); err != nil {
+		panic(err)
 	}
+	metaData := meta.Get(context)
 
 	strippedFileName := fileName[:len(fileName)-3]
 
+	title := strings.ReplaceAll(strippedFileName, "-", " ")
 	postsChan <- Post{
-		Title:       strings.ReplaceAll(strippedFileName, "-", " "),
-		Description: "",
-		Path:        fmt.Sprintf("/post/%s", strippedFileName),
-		Body:        template.HTML(buf.String()),
-		OGName:      strippedFileName,
+		Title:      title,
+		Body:       template.HTML(buf.String()),
+		OGName:     strippedFileName,
+		Date:       metaData["Date"].(string),
+		Author:     metaData["Author"].(string),
+		Summary:    metaData["Summary"].(string),
+		OGImageURL: fmt.Sprintf("%s/og_images/%s.png", config.BaseURL, strippedFileName),
+	}
+
+	metadataChan <- PostMetadata{
+		Slug:    fmt.Sprintf("/post/%s.html", strippedFileName),
+		Title:   title,
+		Date:    metaData["Date"].(string),
+		Summary: metaData["Summary"].(string),
+		Author:  metaData["Author"].(string),
 	}
 }

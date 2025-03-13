@@ -7,5 +7,6 @@ type OGImageConfig struct {
 
 type Config struct {
 	InputDirectory string        `yaml:"InputDirectory"`
+	BaseURL        string        `yaml:"BaseURL"`
 	OGImageConfig  OGImageConfig `yaml:"OGImageConfig"`
 }

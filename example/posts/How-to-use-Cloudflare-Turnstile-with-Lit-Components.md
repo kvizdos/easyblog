@@ -1,8 +1,15 @@
+---
+Date: 05/04/2003
+Summary: This is a brief description of the post.
+Author: Kenton Vizdos
+---
+
 ## What is Cloudflare Turnstile?
 
 Cloudflare Turnstile is a CAPTCHA alternative designed to protect websites from spam, bots, and other automated threats without disrupting the user experience. Unlike traditional CAPTCHAs that require users to solve puzzles or identify images, Turnstile focuses on verifying the user’s authenticity through various browser signals (and, occasionally, will require a user to "check a box"). This results in a frictionless, more user-friendly interaction that is both secure and privacy-focused. With Turnstile, the goal is to eliminate the need for tedious verification challenges while still providing strong protection for your applications.
 
 If you've ever seen one of the following pages, you've used Turnstile before:
+
 ![Cloudflare Turnstile on a Web Page](https://kentonvizdos.com/content/images/2024/10/image.png)
 (credit: https://www.reddit.com/r/webscraping/comments/16hcde6/how_to_deal_with_cloudflare_human_verification/).
 

@@ -1,4 +1,5 @@
 InputDirectory: ./example
+BaseURL: https://kv.codes
 OGImageConfig:
   IconPath: "./example/og/icon.jpg"
   FontPath: "./example/og/regular.ttf"

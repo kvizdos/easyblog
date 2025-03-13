@@ -1,0 +1,18 @@
+<html>
+    <body>
+        <header>
+            <h1>Hello, Blog!</h1>
+        </header>
+        <main>
+            {{ range . }}
+            <a href="{{ .Slug }}">
+                <article>
+                    <p id="title">{{ .Title }}</p>
+                    <p id="summary">{{ .Date }} - {{ .Summary }}</p>
+                    <p id="author">{{ .Author }}</p>
+                </article>
+            </a>
+            {{ end }}
+        </main>
+    </body>
+</html>

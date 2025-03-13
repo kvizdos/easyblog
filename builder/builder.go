@@ -13,12 +13,22 @@ import (
 )
 
 type Post struct {
-	Title       string
-	OGName      string
-	Description string
-	Path        string
-	Body        template.HTML
-	HTML        []byte
+	Title      string
+	OGName     string
+	Body       template.HTML
+	HTML       []byte
+	Date       string
+	Summary    string
+	OGImageURL string
+	Author     string
+}
+
+type PostMetadata struct {
+	Slug    string
+	Title   string
+	Date    string
+	Summary string
+	Author  string
 }
 
 type Builder struct {
@@ -26,19 +36,27 @@ type Builder struct {
 	Config                  Config
 	setupWaitGroup          sync.WaitGroup // setup things like parsing index.html, page.html
 
-	postTemplate *template.Template
+	indexCreated sync.WaitGroup
+
+	postTemplate  *template.Template
+	indexTemplate *template.Template
 }
 
 func (b *Builder) Build() {
 	now := time.Now()
-	b.setupWaitGroup.Add(2)
+	b.setupWaitGroup.Add(3)
+	b.indexCreated.Add(1)
 	go b.setupPostHTML(b.Config.InputDirectory)
+	go b.setupIndexHTML(b.Config.InputDirectory)
 	go b.setupOutDirectory()
 
-	postsChan := b.scanForMarkdownFiles(b.Config.InputDirectory)
+	postsChan, metadataChan := b.scanForMarkdownFiles(b.Config.InputDirectory)
+	go b.buildIndexHTML(metadataChan)
 	doneCh := b.buildPostHTML(postsChan)
 
 	b.writePostOut(doneCh)
+
+	b.indexCreated.Wait()
 
 	took := time.Now().Sub(now)
 
@@ -77,7 +95,7 @@ func (b *Builder) setupOutDirectory() {
 	}
 }
 
-func (b *Builder) scanForMarkdownFiles(inputDirectory string) <-chan Post {
+func (b *Builder) scanForMarkdownFiles(inputDirectory string) (<-chan Post, <-chan PostMetadata) {
 	postsDir := fmt.Sprintf("%s/posts/", inputDirectory)
 	// Find all Markdown files
 	files, err := os.ReadDir(postsDir)
@@ -86,9 +104,11 @@ func (b *Builder) scanForMarkdownFiles(inputDirectory string) <-chan Post {
 	}
 
 	postsChan := make(chan Post, 10)
+	metadataChan := make(chan PostMetadata, 10)
 	concurrentPageBuildsPool := make(chan struct{}, b.MaxConcurrentPageBuilds)
 	go func() {
 		defer close(postsChan)
+		defer close(metadataChan)
 		var wg sync.WaitGroup
 		for _, file := range files {
 			concurrentPageBuildsPool <- struct{}{}
@@ -99,13 +119,33 @@ func (b *Builder) scanForMarkdownFiles(inputDirectory string) <-chan Post {
 						<-concurrentPageBuildsPool
 						wg.Done()
 					}()
-					ParsePost(postsChan, postsDir, fileName)
+					ParsePost(postsChan, metadataChan, b.Config, fileName)
 				}(file.Name())
 			}
 		}
 		wg.Wait()
 	}()
-	return postsChan
+	return postsChan, metadataChan
+}
+
+func (b *Builder) buildIndexHTML(metadata <-chan PostMetadata) {
+	out := []PostMetadata{}
+	for meta := range metadata {
+		out = append(out, meta)
+	}
+
+	var doc bytes.Buffer
+	err := b.indexTemplate.Execute(&doc, out)
+	if err != nil {
+		panic(err)
+	}
+
+	err = os.WriteFile("./out/index.html", doc.Bytes(), 0644)
+	if err != nil {
+		panic(err)
+	}
+
+	b.indexCreated.Done()
 }
 
 func (b *Builder) buildPostHTML(posts <-chan Post) <-chan Post {
@@ -147,5 +187,10 @@ func (b *Builder) writePostOut(posts <-chan Post) {
 
 func (b *Builder) setupPostHTML(inputDirectory string) {
 	b.postTemplate = template.Must(template.ParseFiles(fmt.Sprintf("%s/templates/post.html", inputDirectory)))
+	b.setupWaitGroup.Done()
+}
+
+func (b *Builder) setupIndexHTML(inputDirectory string) {
+	b.indexTemplate = template.Must(template.ParseFiles(fmt.Sprintf("%s/templates/index.html", inputDirectory)))
 	b.setupWaitGroup.Done()
 }
