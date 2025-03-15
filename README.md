@@ -4,7 +4,7 @@ Just make a GitHub Repo, and your blogging.
 
 ## Features
 
-- [ ] Markdown Support for Blog Posts
-- [ ] Automatic "index.html" creation w/ a list of all blog posts
-- [ ] OG Image Creation
+- [x] Markdown Support for Blog Posts
+- [x] Automatic "index.html" creation w/ a list of all blog posts
+- [x] OG Image Creation
 - [ ] Deployment to Cloudflare Pages

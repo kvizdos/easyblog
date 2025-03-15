@@ -7,6 +7,7 @@ import (
 	"log"
 	"os"
 	"path/filepath"
+	"sort"
 	"strings"
 	"sync"
 	"time"
@@ -30,6 +31,34 @@ type PostMetadata struct {
 	Date    string
 	Summary string
 	Author  string
+}
+
+type PostList []PostMetadata
+
+// sort.Interface implementation
+func (p PostList) Len() int      { return len(p) }
+func (p PostList) Swap(i, j int) { p[i], p[j] = p[j], p[i] }
+func (p PostList) Less(i, j int) bool {
+	// Use "01/02/2006" layout for parsing
+	t1, err1 := time.Parse("01/02/2006", p[i].Date)
+	t2, err2 := time.Parse("01/02/2006", p[j].Date)
+	if err1 != nil || err2 != nil {
+		return p[i].Date < p[j].Date
+	}
+	return t1.After(t2)
+}
+
+// Iterator returns a channel that iterates over sorted posts.
+func (p PostList) Iterator() <-chan PostMetadata {
+	ch := make(chan PostMetadata)
+	go func() {
+		// Assuming posts are already sorted.
+		for _, post := range p {
+			ch <- post
+		}
+		close(ch)
+	}()
+	return ch
 }
 
 type Builder struct {
@@ -137,10 +166,12 @@ func (b *Builder) scanForMarkdownFiles(inputDirectory string) (<-chan Post, <-ch
 }
 
 func (b *Builder) buildIndexHTML(metadata <-chan PostMetadata) {
-	out := []PostMetadata{}
+	out := PostList{}
 	for meta := range metadata {
 		out = append(out, meta)
 	}
+
+	sort.Sort(out)
 
 	var doc bytes.Buffer
 	err := b.indexTemplate.Execute(&doc, out)
