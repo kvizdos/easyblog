@@ -94,7 +94,7 @@ func ParsePost(postsChan chan<- Post, metadataChan chan<- PostMetadata, config C
 	}
 
 	metadataChan <- PostMetadata{
-		Slug:    fmt.Sprintf("/post/%s.html", strippedFileName),
+		Slug:    fmt.Sprintf("/post/%s", strippedFileName),
 		Title:   title,
 		Date:    metaData["Date"].(string),
 		Summary: metaData["Summary"].(string),
