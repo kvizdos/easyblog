@@ -1,0 +1,19 @@
+<html>
+    <body>
+        <header>
+            <h1>Tags!</h1>
+        </header>
+        <main>
+            <p>Tag Name: {{ .Tag }}</p>
+            {{ range .Posts }}
+            <a href="{{ .Slug }}">
+                <article>
+                    <p id="title">{{ .Title }}</p>
+                    <p id="summary">{{ .Date }} - {{ .Summary }}</p>
+                    <p id="author">{{ .Author }}</p>
+                </article>
+            </a>
+            {{ end }}
+        </main>
+    </body>
+</html>

@@ -22,6 +22,7 @@ type Post struct {
 	Summary    string
 	OGImageURL string
 	Author     string
+	Tags       []string
 	ToC        template.HTML
 }
 
@@ -31,6 +32,7 @@ type PostMetadata struct {
 	Date    string
 	Summary string
 	Author  string
+	Tags    []string
 }
 
 type PostList []PostMetadata
@@ -66,18 +68,18 @@ type Builder struct {
 	Config                  Config
 	setupWaitGroup          sync.WaitGroup // setup things like parsing index.html, page.html
 
-	indexCreated sync.WaitGroup
+	staticFilesCreated sync.WaitGroup
 
 	postTemplate  *template.Template
 	indexTemplate *template.Template
+	tagTemplate   *template.Template
 }
 
 func (b *Builder) Build() {
 	now := time.Now()
-	b.setupWaitGroup.Add(3)
-	b.indexCreated.Add(1)
-	go b.setupPostHTML(b.Config.InputDirectory)
-	go b.setupIndexHTML(b.Config.InputDirectory)
+	b.setupWaitGroup.Add(2)
+	b.staticFilesCreated.Add(2)
+	go b.setupHTML(b.Config.InputDirectory)
 	go b.setupOutDirectory()
 
 	postsChan, metadataChan := b.scanForMarkdownFiles(b.Config.InputDirectory)
@@ -86,7 +88,7 @@ func (b *Builder) Build() {
 
 	b.writePostOut(doneCh)
 
-	b.indexCreated.Wait()
+	b.staticFilesCreated.Wait()
 
 	took := time.Now().Sub(now)
 
@@ -95,7 +97,7 @@ func (b *Builder) Build() {
 func (b *Builder) setupOutDirectory() {
 	defer b.setupWaitGroup.Done()
 	outDir := "out"
-	scaffoldDirs := []string{"og_images", "assets", "post"}
+	scaffoldDirs := []string{"og_images", "assets", "post", "tags"}
 
 	// Ensure the out directory exists (or error if it conflicts with a non-directory)
 	if err := os.MkdirAll(outDir, 0755); err != nil {
@@ -173,6 +175,8 @@ func (b *Builder) buildIndexHTML(metadata <-chan PostMetadata) {
 
 	sort.Sort(out)
 
+	go b.StartTagPageBuilder(out)
+
 	var doc bytes.Buffer
 	err := b.indexTemplate.Execute(&doc, out)
 	if err != nil {
@@ -184,7 +188,54 @@ func (b *Builder) buildIndexHTML(metadata <-chan PostMetadata) {
 		panic(err)
 	}
 
-	b.indexCreated.Done()
+	b.staticFilesCreated.Done()
+}
+
+func (b *Builder) StartTagPageBuilder(posts PostList) {
+	tagMap := map[string]PostList{}
+
+	for post := range posts.Iterator() {
+		for _, tag := range post.Tags {
+			if v, ok := tagMap[tag]; ok {
+				tagMap[tag] = append(v, post)
+			} else {
+				tagMap[tag] = PostList{post}
+			}
+		}
+	}
+
+	var wg sync.WaitGroup
+	wg.Add(len(tagMap))
+	for tagName, taggedPosts := range tagMap {
+		go func() {
+			defer wg.Done()
+			b.buildTagHTML(tagName, taggedPosts)
+		}()
+	}
+	wg.Wait()
+	b.staticFilesCreated.Done()
+}
+
+func (b *Builder) buildTagHTML(tagName string, taggedPosts PostList) {
+	var doc bytes.Buffer
+	data := struct {
+		Tag   string
+		Posts PostList
+	}{
+		Tag:   tagName,
+		Posts: taggedPosts,
+	}
+	err := b.tagTemplate.Execute(&doc, data)
+	if err != nil {
+		panic(err)
+	}
+
+	urlTag := strings.ToLower(tagName)
+	urlTag = strings.ReplaceAll(urlTag, " ", "-")
+	err = os.WriteFile(fmt.Sprintf("./out/tags/%s.html", urlTag), doc.Bytes(), 0644)
+	if err != nil {
+		panic(err)
+	}
 }
 
 func (b *Builder) buildPostHTML(posts <-chan Post) <-chan Post {
@@ -224,12 +275,10 @@ func (b *Builder) writePostOut(posts <-chan Post) {
 	wg.Wait()
 }
 
-func (b *Builder) setupPostHTML(inputDirectory string) {
+func (b *Builder) setupHTML(inputDirectory string) {
 	b.postTemplate = template.Must(template.ParseFiles(fmt.Sprintf("%s/templates/post.html", inputDirectory)))
-	b.setupWaitGroup.Done()
-}
-
-func (b *Builder) setupIndexHTML(inputDirectory string) {
 	b.indexTemplate = template.Must(template.ParseFiles(fmt.Sprintf("%s/templates/index.html", inputDirectory)))
+	b.tagTemplate = template.Must(template.ParseFiles(fmt.Sprintf("%s/templates/tag.html", inputDirectory)))
+
 	b.setupWaitGroup.Done()
 }

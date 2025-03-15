@@ -76,6 +76,10 @@ func ParsePost(postsChan chan<- Post, metadataChan chan<- PostMetadata, config C
 
 	strippedFileName := fileName[:len(fileName)-3]
 
+	tags := []string{}
+	if v, ok := metaData["Tags"].(string); ok {
+		tags = strings.Split(v, ", ")
+	}
 	title := strings.ReplaceAll(strippedFileName, "-", " ")
 	postsChan <- Post{
 		Title:      title,
@@ -84,6 +88,7 @@ func ParsePost(postsChan chan<- Post, metadataChan chan<- PostMetadata, config C
 		Date:       metaData["Date"].(string),
 		Author:     metaData["Author"].(string),
 		Summary:    metaData["Summary"].(string),
+		Tags:       tags,
 		ToC:        toc,
 		OGImageURL: fmt.Sprintf("%s/og_images/%s.png", config.BaseURL, strippedFileName),
 	}
@@ -94,5 +99,6 @@ func ParsePost(postsChan chan<- Post, metadataChan chan<- PostMetadata, config C
 		Date:    metaData["Date"].(string),
 		Summary: metaData["Summary"].(string),
 		Author:  metaData["Author"].(string),
+		Tags:    tags,
 	}
 }
