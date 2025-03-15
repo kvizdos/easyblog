@@ -173,6 +173,8 @@ func (b *Builder) buildIndexHTML(metadata <-chan PostMetadata) {
 		out = append(out, meta)
 	}
 
+	b.setupWaitGroup.Wait()
+
 	sort.Sort(out)
 
 	go b.StartTagPageBuilder(out)
@@ -275,10 +277,20 @@ func (b *Builder) writePostOut(posts <-chan Post) {
 	wg.Wait()
 }
 
+func (b *Builder) getFuncsMap() template.FuncMap {
+	return template.FuncMap{
+		"TagToURL": func(inp string) string {
+			out := strings.ToLower(inp)
+			out = strings.ReplaceAll(out, " ", "-")
+			return out
+		},
+	}
+}
+
 func (b *Builder) setupHTML(inputDirectory string) {
-	b.postTemplate = template.Must(template.ParseFiles(fmt.Sprintf("%s/templates/post.html", inputDirectory)))
-	b.indexTemplate = template.Must(template.ParseFiles(fmt.Sprintf("%s/templates/index.html", inputDirectory)))
-	b.tagTemplate = template.Must(template.ParseFiles(fmt.Sprintf("%s/templates/tag.html", inputDirectory)))
+	b.postTemplate = template.Must(template.New("post.html").Funcs(b.getFuncsMap()).ParseFiles(fmt.Sprintf("%s/templates/post.html", inputDirectory)))
+	b.indexTemplate = template.Must(template.New("index.html").Funcs(b.getFuncsMap()).ParseFiles(fmt.Sprintf("%s/templates/index.html", inputDirectory)))
+	b.tagTemplate = template.Must(template.New("tag.html").Funcs(b.getFuncsMap()).ParseFiles(fmt.Sprintf("%s/templates/tag.html", inputDirectory)))
 
 	b.setupWaitGroup.Done()
 }
