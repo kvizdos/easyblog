@@ -16,7 +16,7 @@ func GenerateOG(postTitle string, outPath string, config OGImageConfig) {
 	dc.Clear()
 
 	// Load a custom font
-	fontSize := float64(64)
+	fontSize := config.FontSize
 	if err := dc.LoadFontFace(config.FontPath, fontSize); err != nil {
 		panic(err)
 	}

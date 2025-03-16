@@ -1,8 +1,9 @@
 package builder
 
 type OGImageConfig struct {
-	IconPath string `yaml:"IconPath"`
-	FontPath string `yaml:"FontPath"`
+	IconPath string  `yaml:"IconPath"`
+	FontPath string  `yaml:"FontPath"`
+	FontSize float64 `yaml:"FontSize"`
 }
 
 type Config struct {
