@@ -1,0 +1,6 @@
+InputDirectory: ./example
+BaseURL: https://example.com
+OGImageConfig:
+  IconPath: "./example/og/icon.jpg"
+  FontPath: "./example/og/regular.ttf"
+  FontSize: 92

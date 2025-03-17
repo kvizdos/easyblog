@@ -12,12 +12,16 @@ Just make a GitHub Repo, and your blogging.
 
 ## Usage
 
-Check out the `example` folder to get a feel for the file directory, then:
+First, install EasyBlog:
 
 ```
 $ go install github.com/kvizdos/easyblog
-
-$ easyblog --config <path to config>
 ```
 
-Easy as Pie!
+Now, scaffold your project with:
+
+```
+$ easyblog --quickstart
+```
+
+This will setup the project directory + create a GitHub Actions workflow to deploy to GH Pages

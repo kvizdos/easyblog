@@ -1,6 +1,7 @@
-InputDirectory: ./example
-BaseURL: https://kv.codes
+InputDirectory: .
+BaseURL: https://example.com
+CodeStyle: "dracula" # Read about available themes here: https://github.com/alecthomas/chroma/tree/master/styles
 OGImageConfig:
-  IconPath: "./example/og/icon.jpg"
-  FontPath: "./example/og/regular.ttf"
+  IconPath: "./og/icon.jpg"
+  FontPath: "./og/regular.ttf"
   FontSize: 92

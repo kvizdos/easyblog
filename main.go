@@ -6,12 +6,22 @@ import (
 	"github.com/golobby/config/v3"
 	"github.com/golobby/config/v3/pkg/feeder"
 	"github.com/kvizdos/easyblog/builder"
+	"github.com/kvizdos/easyblog/quickstart"
 )
 
 var configPath = flag.String("config", "config.yaml", "Specify a path to a config file")
 
+var quickStart = flag.Bool("quickstart", false, "Set to true to scaffold out your project")
+
+var quickStartTargetDir = flag.String("target", ".", "Quick start target output directory")
+
 func main() {
 	flag.Parse()
+
+	if *quickStart {
+		quickstart.Scaffold(*quickStartTargetDir)
+		return
+	}
 
 	cfg := builder.Config{}
 	jsonFeeder := feeder.Yaml{Path: *configPath}
