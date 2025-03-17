@@ -25,3 +25,13 @@ $ easyblog --quickstart
 ```
 
 This will setup the project directory + create a GitHub Actions workflow to deploy to GH Pages
+
+From there, customize HTML pages (in ./templates), add some styling, and add a post! You are off to the races.
+
+If you'd like to build locally, run:
+
+```
+$ easyblog
+```
+
+This will build the files to `./out`. Do note: when clicking into a page, add `.html` to the URL.
