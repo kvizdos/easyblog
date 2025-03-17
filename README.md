@@ -35,3 +35,9 @@ $ easyblog
 ```
 
 This will build the files to `./out`. Do note: when clicking into a page, add `.html` to the URL.
+
+## See it in Action
+
+Check out my personal dev blog here. It uses EasyBlog!
+
+[https://github.com/kvizdos/kvizdos.github.io](https://github.com/kvizdos/kvizdos.github.io)
