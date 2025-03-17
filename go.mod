@@ -4,6 +4,8 @@ go 1.24.0
 
 require (
 	github.com/BurntSushi/toml v1.2.1 // indirect
+	github.com/alecthomas/chroma/v2 v2.2.0 // indirect
+	github.com/dlclark/regexp2 v1.7.0 // indirect
 	github.com/fogleman/gg v1.3.0 // indirect
 	github.com/golang/freetype v0.0.0-20170609003504-e2365dfdc4a0 // indirect
 	github.com/golobby/cast v1.3.3 // indirect
@@ -12,6 +14,7 @@ require (
 	github.com/golobby/env/v2 v2.2.4 // indirect
 	github.com/mangoumbrella/goldmark-figure v1.2.0 // indirect
 	github.com/yuin/goldmark v1.7.8 // indirect
+	github.com/yuin/goldmark-highlighting/v2 v2.0.0-20230729083705-37449abec8cc // indirect
 	github.com/yuin/goldmark-meta v1.1.0 // indirect
 	go.abhg.dev/goldmark/anchor v0.2.0 // indirect
 	go.abhg.dev/goldmark/toc v0.11.0 // indirect

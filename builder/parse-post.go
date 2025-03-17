@@ -15,6 +15,9 @@ import (
 	"github.com/yuin/goldmark/text"
 	"go.abhg.dev/goldmark/anchor"
 	"go.abhg.dev/goldmark/toc"
+
+	chromahtml "github.com/alecthomas/chroma/v2/formatters/html"
+	highlighting "github.com/yuin/goldmark-highlighting/v2"
 )
 
 type customTexter struct{}
@@ -42,7 +45,12 @@ func ParsePost(postsChan chan<- Post, metadataChan chan<- PostMetadata, config C
 				"class": "headerPermalink",
 			},
 			Texter: &customTexter{},
-		}),
+		}, highlighting.NewHighlighting(
+			highlighting.WithStyle(config.CodeStyle),
+			highlighting.WithFormatOptions(
+				chromahtml.WithLineNumbers(true),
+			),
+		)),
 	)
 
 	var buf bytes.Buffer
