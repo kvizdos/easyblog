@@ -11,6 +11,8 @@ import (
 	"strings"
 	"sync"
 	"time"
+
+	"github.com/kvizdos/easyblog/sitemap"
 )
 
 type Post struct {
@@ -73,10 +75,18 @@ type Builder struct {
 	postTemplate  *template.Template
 	indexTemplate *template.Template
 	tagTemplate   *template.Template
+
+	sitemap *sitemap.Sitemap
 }
 
 func (b *Builder) Build() {
 	now := time.Now()
+	b.sitemap = &sitemap.Sitemap{
+		BaseURL:    b.Config.BaseURL,
+		Pages:      []sitemap.SitemapPage{},
+		Xmlns:      "http://www.sitemaps.org/schemas/sitemap/0.9",
+		XmlnsXHTML: "http://www.w3.org/1999/xhtml",
+	}
 	b.setupWaitGroup.Add(2)
 	b.staticFilesCreated.Add(2)
 	go b.setupHTML(b.Config.InputDirectory)
@@ -90,6 +100,7 @@ func (b *Builder) Build() {
 
 	b.staticFilesCreated.Wait()
 
+	b.writeSitemapToDisk()
 	took := time.Now().Sub(now)
 
 	fmt.Println("All done!", took)
@@ -169,8 +180,10 @@ func (b *Builder) scanForMarkdownFiles(inputDirectory string) (<-chan Post, <-ch
 
 func (b *Builder) buildIndexHTML(metadata <-chan PostMetadata) {
 	out := PostList{}
+
 	for meta := range metadata {
 		out = append(out, meta)
+		b.sitemap.AddPageURL(meta.Slug)
 	}
 
 	b.setupWaitGroup.Wait()
@@ -234,10 +247,20 @@ func (b *Builder) buildTagHTML(tagName string, taggedPosts PostList) {
 
 	urlTag := strings.ToLower(tagName)
 	urlTag = strings.ReplaceAll(urlTag, " ", "-")
+	b.sitemap.AddPageURL(fmt.Sprintf("/tags/%s", urlTag))
+
 	err = os.WriteFile(fmt.Sprintf("./out/tags/%s.html", urlTag), doc.Bytes(), 0644)
 	if err != nil {
 		panic(err)
 	}
+}
+
+func (b *Builder) writeSitemapToDisk() {
+	err := os.WriteFile("./out/sitemap.xml", b.sitemap.Marshal(), 0644)
+	if err != nil {
+		panic(err)
+	}
+	return
 }
 
 func (b *Builder) buildPostHTML(posts <-chan Post) <-chan Post {

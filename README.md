@@ -8,6 +8,7 @@ Just make a GitHub Repo, and your blogging.
 - [x] Automatic "index.html" creation w/ a list of all blog posts
 - [x] OG Image Creation
 - [x] Support Tags & have "Tag Pages"
+- [x] Sitemap.xml Generation
 
 ## Usage
 
