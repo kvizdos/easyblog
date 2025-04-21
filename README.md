@@ -10,6 +10,7 @@ Just make a GitHub Repo, and your blogging.
 - [x] Support Tags & have "Tag Pages"
 - [x] Sitemap.xml Generation
 - [x] One-Off, Static Page Support
+- [x] Run in `serve` mode for development.
 - TODO: RSS Feed
 
 ## Usage
@@ -37,6 +38,14 @@ $ easyblog
 ```
 
 This will build the files to `./out`. Do note: when clicking into a page, add `.html` to the URL.
+
+You may also "serve" the files locally with the following command. This should only be used for development:
+
+```
+$ easyblog --serve --port 8080
+```
+
+(port is optional)
 
 ## See it in Action
 

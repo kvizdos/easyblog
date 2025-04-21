@@ -15,6 +15,10 @@ var quickStart = flag.Bool("quickstart", false, "Set to true to scaffold out you
 
 var quickStartTargetDir = flag.String("target", ".", "Quick start target output directory")
 
+var serve = flag.Bool("serve", false, "Set to true to serve your project FOR DEVELOPMENT.")
+
+var servePort = flag.String("port", "8080", "Change the default port of the Serve")
+
 func main() {
 	flag.Parse()
 
@@ -39,6 +43,12 @@ func main() {
 		MaxConcurrentPageBuilds: 5,
 		Config:                  cfg,
 	}
+
+	if *serve == true {
+		build.Serve(*servePort)
+		return
+	}
+
 	build.Build()
 	// Create a new Goldmark instance with GitHub Flavored Markdown extension.
 	// md := goldmark.New(

@@ -4,7 +4,9 @@ import (
 	"bytes"
 	"fmt"
 	"html/template"
+	"io/fs"
 	"log"
+	"net/http"
 	"os"
 	"path/filepath"
 	"sort"
@@ -12,6 +14,7 @@ import (
 	"sync"
 	"time"
 
+	"github.com/fsnotify/fsnotify"
 	"github.com/kvizdos/easyblog/sitemap"
 )
 
@@ -77,6 +80,76 @@ type Builder struct {
 	tagTemplate   *template.Template
 
 	sitemap *sitemap.Sitemap
+}
+
+// helper to walk all subdirs and add them to the watcher
+func watchRecursive(watcher *fsnotify.Watcher, root string) error {
+	return filepath.WalkDir(root, func(path string, d fs.DirEntry, err error) error {
+		if err != nil {
+			return err
+		}
+		if d.IsDir() {
+			return watcher.Add(path)
+		}
+		return nil
+	})
+}
+
+func (b *Builder) Serve(port string) {
+	go func() {
+		watcher, err := fsnotify.NewWatcher()
+		if err != nil {
+			log.Fatal(err)
+		}
+		defer watcher.Close()
+
+		err = watchRecursive(watcher, b.Config.InputDirectory)
+		if err != nil {
+			log.Fatal(err)
+		}
+
+		for {
+			select {
+			case event, ok := <-watcher.Events:
+				if !ok {
+					return
+				}
+				log.Println("File changed:", event.Name)
+				b.Build()
+
+				// If a new directory was created, watch it
+				if event.Op&fsnotify.Create != 0 {
+					fi, err := os.Stat(event.Name)
+					if err == nil && fi.IsDir() {
+						_ = watchRecursive(watcher, event.Name)
+					}
+				}
+			case err, ok := <-watcher.Errors:
+				if !ok {
+					return
+				}
+				log.Println("Watcher error:", err)
+			}
+		}
+	}()
+
+	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+		path := "out" + r.URL.Path
+
+		// Try to serve path as-is
+		if _, err := os.Stat(path); os.IsNotExist(err) {
+			// If no extension and .html file exists, rewrite path
+			if filepath.Ext(path) == "" {
+				if _, err := os.Stat(path + ".html"); err == nil {
+					r.URL.Path += ".html"
+				}
+			}
+		}
+
+		http.FileServer(http.Dir("out")).ServeHTTP(w, r)
+	})
+	log.Println("Serving on http://localhost:" + port)
+	http.ListenAndServe(":"+port, nil)
 }
 
 func (b *Builder) Build() {
