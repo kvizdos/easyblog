@@ -9,6 +9,8 @@ Just make a GitHub Repo, and your blogging.
 - [x] OG Image Creation
 - [x] Support Tags & have "Tag Pages"
 - [x] Sitemap.xml Generation
+- [x] One-Off, Static Page Support
+- TODO: RSS Feed
 
 ## Usage
 

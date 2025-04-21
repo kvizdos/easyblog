@@ -4,3 +4,5 @@ OGImageConfig:
   IconPath: "./example/og/icon.jpg"
   FontPath: "./example/og/regular.ttf"
   FontSize: 92
+StaticConfig:
+  Path: "./static"

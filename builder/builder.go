@@ -101,6 +101,7 @@ func (b *Builder) Build() {
 	b.staticFilesCreated.Wait()
 
 	b.writeSitemapToDisk()
+	b.buildStaticFiles()
 	took := time.Now().Sub(now)
 
 	fmt.Println("All done!", took)
@@ -176,6 +177,12 @@ func (b *Builder) scanForMarkdownFiles(inputDirectory string) (<-chan Post, <-ch
 		wg.Wait()
 	}()
 	return postsChan, metadataChan
+}
+
+func (b *Builder) buildStaticFiles() {
+	staticDir := fmt.Sprintf("%s/%s", b.Config.InputDirectory, b.Config.StaticConfig.Path)
+
+	copyDir(staticDir, "./out")
 }
 
 func (b *Builder) buildIndexHTML(metadata <-chan PostMetadata) {
