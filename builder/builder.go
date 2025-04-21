@@ -82,6 +82,13 @@ type Builder struct {
 	sitemap *sitemap.Sitemap
 }
 
+var (
+	debounceMu sync.Mutex
+	debounce   *time.Timer
+)
+
+const debounceDelay = 250 * time.Millisecond
+
 // helper to walk all subdirs and add them to the watcher
 func watchRecursive(watcher *fsnotify.Watcher, root string) error {
 	return filepath.WalkDir(root, func(path string, d fs.DirEntry, err error) error {
@@ -90,13 +97,15 @@ func watchRecursive(watcher *fsnotify.Watcher, root string) error {
 		}
 		if d.IsDir() {
 			// Skip hidden dirs.
-			if strings.HasPrefix(d.Name(), ".") {
+			if strings.HasPrefix(d.Name(), ".") && len(d.Name()) > 1 {
+				fmt.Println("Skipping", path)
 				return filepath.SkipDir
 			}
 			// Skip the "out" dir and any of its subdirs
 			if strings.HasPrefix(path, filepath.Join(root, "out")) {
 				return filepath.SkipDir
 			}
+			fmt.Println("Adding", path)
 			return watcher.Add(path)
 		}
 		return nil
@@ -122,8 +131,19 @@ func (b *Builder) Serve(port string) {
 				if !ok {
 					return
 				}
-				log.Println("File changed:", event.Name)
-				b.Build()
+				if event.Op&(fsnotify.Create|fsnotify.Write|fsnotify.Remove|fsnotify.Rename) != 0 {
+					log.Println("File changed:", event.Name)
+
+					debounceMu.Lock()
+					if debounce != nil {
+						debounce.Stop()
+					}
+					debounce = time.AfterFunc(debounceDelay, func() {
+						log.Println("Running build...")
+						b.Build()
+					})
+					debounceMu.Unlock()
+				}
 
 				// If a new directory was created, watch it
 				if event.Op&fsnotify.Create != 0 {
