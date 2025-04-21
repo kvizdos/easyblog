@@ -89,8 +89,9 @@ func watchRecursive(watcher *fsnotify.Watcher, root string) error {
 			return err
 		}
 		if d.IsDir() {
-			if d.Name() == "out" {
-				return nil
+			// Skip the "out" dir and any of its subdirs
+			if strings.HasPrefix(path, filepath.Join(root, "out")) {
+				return filepath.SkipDir
 			}
 			return watcher.Add(path)
 		}
