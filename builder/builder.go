@@ -89,6 +89,10 @@ func watchRecursive(watcher *fsnotify.Watcher, root string) error {
 			return err
 		}
 		if d.IsDir() {
+			// Skip hidden dirs.
+			if strings.HasPrefix(d.Name(), ".") {
+				return filepath.SkipDir
+			}
 			// Skip the "out" dir and any of its subdirs
 			if strings.HasPrefix(path, filepath.Join(root, "out")) {
 				return filepath.SkipDir
