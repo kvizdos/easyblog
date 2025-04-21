@@ -89,6 +89,9 @@ func watchRecursive(watcher *fsnotify.Watcher, root string) error {
 			return err
 		}
 		if d.IsDir() {
+			if d.Name() == "out" {
+				return nil
+			}
 			return watcher.Add(path)
 		}
 		return nil
