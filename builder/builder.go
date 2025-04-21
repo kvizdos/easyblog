@@ -180,6 +180,9 @@ func (b *Builder) scanForMarkdownFiles(inputDirectory string) (<-chan Post, <-ch
 }
 
 func (b *Builder) buildStaticFiles() {
+	if b.Config.StaticConfig.Path == "" {
+		return
+	}
 	staticDir := fmt.Sprintf("%s/%s", b.Config.InputDirectory, b.Config.StaticConfig.Path)
 
 	copyDir(staticDir, "./out")
