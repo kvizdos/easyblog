@@ -1,7 +1,6 @@
 package builder
 
 import (
-	"fmt"
 	"io"
 	"os"
 	"path/filepath"
@@ -20,7 +19,6 @@ func copyDir(src string, dst string) error {
 		if info.IsDir() {
 			return os.MkdirAll(targetPath, info.Mode())
 		}
-		fmt.Println(path, targetPath)
 		return copyFile(path, targetPath)
 	})
 }
