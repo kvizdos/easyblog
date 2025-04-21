@@ -11,6 +11,7 @@ Just make a GitHub Repo, and your blogging.
 - [x] Sitemap.xml Generation
 - [x] One-Off, Static Page Support
 - [x] Run in `serve` mode for development.
+  - [ ] TODO: Make this a bit more efficient; currently, it rebuilds the entire project on save. It seems unnecessary to do so.
 - TODO: RSS Feed
 
 ## Usage
