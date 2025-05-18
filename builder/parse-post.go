@@ -88,7 +88,13 @@ func ParsePost(postsChan chan<- Post, metadataChan chan<- PostMetadata, config C
 	if v, ok := metaData["Tags"].(string); ok {
 		tags = strings.Split(v, ", ")
 	}
+
 	title := strings.ReplaceAll(strippedFileName, "-", " ")
+
+	if v, ok := metaData["Title"].(string); ok {
+		title = v
+	}
+
 	postsChan <- Post{
 		Title:      title,
 		Body:       template.HTML(buf.String()),
