@@ -8,6 +8,7 @@ import (
 	"strings"
 
 	figure "github.com/mangoumbrella/goldmark-figure"
+	fences "github.com/stefanfritsch/goldmark-fences"
 	"github.com/yuin/goldmark"
 	meta "github.com/yuin/goldmark-meta"
 	"github.com/yuin/goldmark/extension"
@@ -45,12 +46,14 @@ func ParsePost(postsChan chan<- Post, metadataChan chan<- PostMetadata, config C
 				"class": "headerPermalink",
 			},
 			Texter: &customTexter{},
-		}, highlighting.NewHighlighting(
-			highlighting.WithStyle(config.CodeStyle),
-			highlighting.WithFormatOptions(
-				chromahtml.WithLineNumbers(true),
-			),
-		)),
+		},
+			&fences.Extender{},
+			highlighting.NewHighlighting(
+				highlighting.WithStyle(config.CodeStyle),
+				highlighting.WithFormatOptions(
+					chromahtml.WithLineNumbers(true),
+				),
+			)),
 	)
 
 	var buf bytes.Buffer

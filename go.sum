@@ -33,6 +33,8 @@ github.com/mangoumbrella/goldmark-figure v1.2.0/go.mod h1:iIL+fhdmCQDpE0l/TKtGho
 github.com/pkg/diff v0.0.0-20210226163009-20ebb0f2a09e/go.mod h1:pJLUxLENpZxwdsKMEsNbx1VGcRFpLqf3715MtcvvzbA=
 github.com/pmezard/go-difflib v1.0.0/go.mod h1:iKH77koFhYxTK1pcRnkKkqfTogsbg7gZNVY4sRDYZ/4=
 github.com/rogpeppe/go-internal v1.9.0/go.mod h1:WtVeX8xhTBvf0smdhujwtBcq4Qrzq/fJaraNFVN+nFs=
+github.com/stefanfritsch/goldmark-fences v1.0.0 h1:cAL9eFJx5AfODfzURJg/R4M0TdynZb4azpGtXebywCI=
+github.com/stefanfritsch/goldmark-fences v1.0.0/go.mod h1:afDcGjekNr4uEUtTuDNmU+yPElZkv0bF2ASp+KoYsDk=
 github.com/stretchr/objx v0.1.0/go.mod h1:HFkY916IF+rwdDfMAkV7OtwuqBVzrE8GR6GFx+wExME=
 github.com/stretchr/objx v0.4.0/go.mod h1:YvHI0jy2hoMjB+UWwv71VJQ9isScKT/TqJzVSSt89Yw=
 github.com/stretchr/objx v0.5.0/go.mod h1:Yh+to48EsGEfYuaHDzXPcE3xhTkx73EhmCGUpEOglKo=
