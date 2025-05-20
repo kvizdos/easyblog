@@ -9,6 +9,7 @@ import (
 	"net/http"
 	"os"
 	"path/filepath"
+	"slices"
 	"sort"
 	"strings"
 	"sync"
@@ -417,6 +418,9 @@ func (b *Builder) getFuncsMap() template.FuncMap {
 			out := strings.ToLower(inp)
 			out = strings.ReplaceAll(out, " ", "-")
 			return out
+		},
+		"contains": func(slice []string, item string) bool {
+			return slices.Contains(slice, item)
 		},
 	}
 }
