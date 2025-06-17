@@ -6,6 +6,7 @@ import (
 	"html/template"
 	"io/fs"
 	"log"
+	"maps"
 	"net/http"
 	"os"
 	"path/filepath"
@@ -20,25 +21,27 @@ import (
 )
 
 type Post struct {
-	Title      string
-	OGName     string
-	Body       template.HTML
-	HTML       []byte
-	Date       string
-	Summary    string
-	OGImageURL string
-	Author     string
-	Tags       []string
-	ToC        template.HTML
+	Title       string
+	OGName      string
+	Body        template.HTML
+	HTML        []byte
+	Date        string
+	Summary     string
+	OGImageURL  string
+	Author      string
+	Tags        []string
+	ToC         template.HTML
+	RawMetadata map[string]any
 }
 
 type PostMetadata struct {
-	Slug    string
-	Title   string
-	Date    string
-	Summary string
-	Author  string
-	Tags    []string
+	RawMetadata map[string]any
+	Slug        string
+	Title       string
+	Date        string
+	Summary     string
+	Author      string
+	Tags        []string
 }
 
 type PostList []PostMetadata
@@ -72,6 +75,7 @@ func (p PostList) Iterator() <-chan PostMetadata {
 type Builder struct {
 	MaxConcurrentPageBuilds int
 	Config                  Config
+	CustomFuncs             template.FuncMap
 	setupWaitGroup          sync.WaitGroup // setup things like parsing index.html, page.html
 
 	staticFilesCreated sync.WaitGroup
@@ -372,7 +376,6 @@ func (b *Builder) writeSitemapToDisk() {
 	if err != nil {
 		panic(err)
 	}
-	return
 }
 
 func (b *Builder) buildPostHTML(posts <-chan Post) <-chan Post {
@@ -413,7 +416,7 @@ func (b *Builder) writePostOut(posts <-chan Post) {
 }
 
 func (b *Builder) getFuncsMap() template.FuncMap {
-	return template.FuncMap{
+	out := template.FuncMap{
 		"TagToURL": func(inp string) string {
 			out := strings.ToLower(inp)
 			out = strings.ReplaceAll(out, " ", "-")
@@ -423,6 +426,9 @@ func (b *Builder) getFuncsMap() template.FuncMap {
 			return slices.Contains(slice, item)
 		},
 	}
+
+	maps.Copy(out, b.CustomFuncs)
+	return out
 }
 
 func (b *Builder) setupHTML(inputDirectory string) {

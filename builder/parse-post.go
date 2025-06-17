@@ -99,23 +99,25 @@ func ParsePost(postsChan chan<- Post, metadataChan chan<- PostMetadata, config C
 	}
 
 	postsChan <- Post{
-		Title:      title,
-		Body:       template.HTML(buf.String()),
-		OGName:     strippedFileName,
-		Date:       metaData["Date"].(string),
-		Author:     metaData["Author"].(string),
-		Summary:    metaData["Summary"].(string),
-		Tags:       tags,
-		ToC:        toc,
-		OGImageURL: fmt.Sprintf("%s/og_images/%s.png", config.BaseURL, strippedFileName),
+		Title:       title,
+		Body:        template.HTML(buf.String()),
+		OGName:      strippedFileName,
+		Date:        metaData["Date"].(string),
+		Author:      metaData["Author"].(string),
+		Summary:     metaData["Summary"].(string),
+		Tags:        tags,
+		ToC:         toc,
+		OGImageURL:  fmt.Sprintf("%s/og_images/%s.png", config.BaseURL, strippedFileName),
+		RawMetadata: metaData,
 	}
 
 	metadataChan <- PostMetadata{
-		Slug:    fmt.Sprintf("/post/%s", strippedFileName),
-		Title:   title,
-		Date:    metaData["Date"].(string),
-		Summary: metaData["Summary"].(string),
-		Author:  metaData["Author"].(string),
-		Tags:    tags,
+		RawMetadata: metaData,
+		Slug:        fmt.Sprintf("/post/%s", strippedFileName),
+		Title:       title,
+		Date:        metaData["Date"].(string),
+		Summary:     metaData["Summary"].(string),
+		Author:      metaData["Author"].(string),
+		Tags:        tags,
 	}
 }
