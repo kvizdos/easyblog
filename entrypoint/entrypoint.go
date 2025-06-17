@@ -21,7 +21,8 @@ var serve = flag.Bool("serve", false, "Set to true to serve your project FOR DEV
 var servePort = flag.String("port", "8080", "Change the default port of the Serve")
 
 type EasyblogOpts struct {
-	CustomFuncs template.FuncMap
+	CustomFuncs       template.FuncMap
+	CustomOGGenerator builder.OGGeneratorFunc
 }
 
 func Start(opts EasyblogOpts) {
@@ -48,6 +49,7 @@ func Start(opts EasyblogOpts) {
 		MaxConcurrentPageBuilds: 5,
 		Config:                  cfg,
 		CustomFuncs:             opts.CustomFuncs,
+		OGGenerator:             opts.CustomOGGenerator,
 	}
 
 	if *serve == true {

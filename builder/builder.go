@@ -72,11 +72,15 @@ func (p PostList) Iterator() <-chan PostMetadata {
 	return ch
 }
 
+type OGGeneratorFunc func(postTitle string, outPath string, config OGImageConfig)
+
 type Builder struct {
 	MaxConcurrentPageBuilds int
 	Config                  Config
 	CustomFuncs             template.FuncMap
-	setupWaitGroup          sync.WaitGroup // setup things like parsing index.html, page.html
+	OGGenerator             OGGeneratorFunc
+
+	setupWaitGroup sync.WaitGroup // setup things like parsing index.html, page.html
 
 	staticFilesCreated sync.WaitGroup
 
@@ -409,7 +413,11 @@ func (b *Builder) writePostOut(posts <-chan Post) {
 		}()
 		go func() {
 			defer wg.Done()
-			GenerateOG(post.Title, fmt.Sprintf("./out/og_images/%s.png", post.OGName), b.Config.OGImageConfig)
+			if b.OGGenerator != nil {
+				b.OGGenerator(post.Title, fmt.Sprintf("./out/og_images/%s.png", post.OGName), b.Config.OGImageConfig)
+			} else {
+				GenerateOG(post.Title, fmt.Sprintf("./out/og_images/%s.png", post.OGName), b.Config.OGImageConfig)
+			}
 		}()
 	}
 	wg.Wait()
