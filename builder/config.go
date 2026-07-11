@@ -4,6 +4,12 @@ type OGImageConfig struct {
 	IconPath string  `yaml:"IconPath"`
 	FontPath string  `yaml:"FontPath"`
 	FontSize float64 `yaml:"FontSize"`
+	BgR      int     `yaml:"BgR"`
+	BgG      int     `yaml:"BgG"`
+	BgB      int     `yaml:"BgB"`
+	TextR    int     `yaml:"TextR"`
+	TextG    int     `yaml:"TextG"`
+	TextB    int     `yaml:"TextB"`
 }
 
 type StaticConfig struct {
