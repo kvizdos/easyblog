@@ -4,6 +4,8 @@ Date: 03/15/2025
 Summary: This is a demo post.
 Author: Kenton Vizdos
 Tags: Example Tag 1, Example Tag 2
+Syndications:
+  bluesky: https://demo.com
 ---
 
 ## Your first heading should be an H2!

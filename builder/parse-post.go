@@ -98,26 +98,37 @@ func ParsePost(postsChan chan<- Post, metadataChan chan<- PostMetadata, config C
 		title = v
 	}
 
+	syndications := map[string]string{}
+	if v, ok := metaData["Syndications"].(map[any]any); ok {
+		for k, v := range v {
+			syndications[k.(string)] = v.(string)
+		}
+	}
+
 	postsChan <- Post{
-		Title:       title,
-		Body:        template.HTML(buf.String()),
-		OGName:      strippedFileName,
-		Date:        metaData["Date"].(string),
-		Author:      metaData["Author"].(string),
-		Summary:     metaData["Summary"].(string),
-		Tags:        tags,
-		ToC:         toc,
-		OGImageURL:  fmt.Sprintf("%s/og_images/%s.png", config.BaseURL, strippedFileName),
-		RawMetadata: metaData,
+		Title:        title,
+		Body:         template.HTML(buf.String()),
+		OGName:       strippedFileName,
+		Date:         metaData["Date"].(string),
+		Author:       metaData["Author"].(string),
+		Summary:      metaData["Summary"].(string),
+		Tags:         tags,
+		ToC:          toc,
+		OGImageURL:   fmt.Sprintf("%s/og_images/%s.png", config.BaseURL, strippedFileName),
+		RawMetadata:  metaData,
+		Syndications: syndications,
 	}
 
 	metadataChan <- PostMetadata{
-		RawMetadata: metaData,
-		Slug:        fmt.Sprintf("/post/%s", strippedFileName),
-		Title:       title,
-		Date:        metaData["Date"].(string),
-		Summary:     metaData["Summary"].(string),
-		Author:      metaData["Author"].(string),
-		Tags:        tags,
+		RawMetadata:  metaData,
+		Slug:         fmt.Sprintf("/post/%s", strippedFileName),
+		Title:        title,
+		Date:         metaData["Date"].(string),
+		Summary:      metaData["Summary"].(string),
+		Author:       metaData["Author"].(string),
+		Syndications: syndications,
+		Tags:         tags,
 	}
+
+	fmt.Println(syndications)
 }

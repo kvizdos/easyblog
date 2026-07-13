@@ -20,5 +20,9 @@
         </header>
         <aside>{{.ToC}}</aside>
         <main>{{.Body}}</main>
+
+        {{ range $provider, $url := .Syndications }}
+        <a href="{{ $url }}">{{ $provider }}</a>
+        {{ end }}
     </body>
 </html>

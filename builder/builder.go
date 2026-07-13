@@ -21,27 +21,29 @@ import (
 )
 
 type Post struct {
-	Title       string
-	OGName      string
-	Body        template.HTML
-	HTML        []byte
-	Date        string
-	Summary     string
-	OGImageURL  string
-	Author      string
-	Tags        []string
-	ToC         template.HTML
-	RawMetadata map[string]any
+	Title        string
+	OGName       string
+	Body         template.HTML
+	HTML         []byte
+	Date         string
+	Summary      string
+	OGImageURL   string
+	Author       string
+	Syndications map[string]string
+	Tags         []string
+	ToC          template.HTML
+	RawMetadata  map[string]any
 }
 
 type PostMetadata struct {
-	RawMetadata map[string]any
-	Slug        string
-	Title       string
-	Date        string
-	Summary     string
-	Author      string
-	Tags        []string
+	RawMetadata  map[string]any
+	Slug         string
+	Syndications map[string]string
+	Title        string
+	Date         string
+	Summary      string
+	Author       string
+	Tags         []string
 }
 
 type PostList []PostMetadata
