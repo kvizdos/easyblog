@@ -27,6 +27,7 @@ type Post struct {
 	HTML         []byte
 	Date         string
 	Summary      string
+	Slug         string
 	OGImageURL   string
 	Author       string
 	Syndications map[string]string

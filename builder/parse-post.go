@@ -107,6 +107,7 @@ func ParsePost(postsChan chan<- Post, metadataChan chan<- PostMetadata, config C
 
 	postsChan <- Post{
 		Title:        title,
+		Slug:         fmt.Sprintf("/post/%s", strippedFileName),
 		Body:         template.HTML(buf.String()),
 		OGName:       strippedFileName,
 		Date:         metaData["Date"].(string),
