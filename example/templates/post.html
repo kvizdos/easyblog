@@ -1,28 +1,46 @@
 <!doctype html>
 <html lang="en">
     <head>
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
-        <link rel="stylesheet" href="/assets/style.css" />
+        {{ template "head" . }}
         <link rel="stylesheet" href="/assets/post.css" />
 
-        <meta property="og:title" content="{{.Title}}" />
-        <meta property="og:type" content="article" />
-        <meta property="og:image" content="{{.OGImageURL}}" />
-        <meta property="og:description" content="{{.Summary}}" />
-        <meta name="description" content="{{.Summary}}" />
-
-        <title>{{.Title}} - My Awesome Blog</title>
+        <script type="application/ld+json">
+            {
+                "@context": "https://schema.org",
+                "@type": "BlogPosting",
+                "headline": "{{ .Title }}",
+                "image": ["{{ .OGImageURL }}"],
+                "datePublished": "{{ isoDate .PublishedAt }}",
+                "dateModified": "{{ isoDate .UpdatedAt }}",
+                "wordCount": {{ .WordCount }},
+                "description": "{{ .Summary }}",
+                "mainEntityOfPage": "{{ .URL }}"
+            }
+        </script>
     </head>
     <body>
         <header>
-            <h1>{{.Title}}</h1>
+            <h1>{{ .Title }}</h1>
+            <p>{{ formatDate "Jan 2, 2006" .PublishedAt }} &bull; {{ .ReadingMinutes }} min read</p>
+            <p>{{ range .Tags }}<a href="/tags/{{ TagToURL . }}">#{{ . }}</a> {{ end }}</p>
         </header>
-        <aside>{{.ToC}}</aside>
-        <main>{{.Body}}</main>
+        {{ if .ToC }}<aside>{{ .ToC }}</aside>{{ end }}
+        <main>{{ .Body }}</main>
 
         {{ range $provider, $url := .Syndications }}
         <a href="{{ $url }}">{{ $provider }}</a>
+        {{ end }}
+
+        <nav>
+            {{ with .Prev }}<a href="{{ .Slug }}">&larr; {{ .Title }}</a>{{ end }}
+            {{ with .Next }}<a href="{{ .Slug }}">{{ .Title }} &rarr;</a>{{ end }}
+        </nav>
+
+        {{ if .Related }}
+        <section>
+            <h2>Related posts</h2>
+            {{ range .Related }}<a href="{{ .Slug }}">{{ .Title }}</a>{{ end }}
+        </section>
         {{ end }}
     </body>
 </html>

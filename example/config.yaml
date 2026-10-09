@@ -1,7 +1,20 @@
 InputDirectory: .
 BaseURL: https://example.com
+Title: My Awesome Blog
+Description: Notes on building things.
+Author: Your Name
 CodeStyle: "dracula" # Read about available themes here: https://github.com/alecthomas/chroma/tree/master/styles
 OGImageConfig:
   IconPath: "./og/icon.jpg"
   FontPath: "./og/regular.ttf"
   FontSize: 92
+StaticConfig:
+  Path: "./static"
+Feed:
+  Enabled: true
+  Limit: 20
+  FullContent: true
+# SlugStyle: slugify      # /post/my-post instead of /post/My-Post
+# CleanURLs: true         # write post/X/index.html so only /post/X/ exists
+SkipFuturePosts: true     # build future-dated posts only with -future
+ToCMinHeadings: 2

@@ -1,24 +1,19 @@
 <!doctype html>
 <html lang="en">
     <head>
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
-        <link rel="stylesheet" href="/assets/style.css" />
-
-        <title>EasyBlog Quick Start</title>
-        <meta name="description" content="REPLACE ME!!!" />
+        {{ template "head" . }}
     </head>
     <body>
         <header>
-            <h1>Hello, Blog!</h1>
+            <h1>{{ site.Title }}</h1>
         </header>
         <main>
             {{ range . }}
             <a href="{{ .Slug }}">
                 <article>
                     <p id="title">{{ .Title }}</p>
-                    <p id="summary">{{ .Date }} - {{ .Summary }}</p>
-                    <p id="author">{{ .Author }}</p>
+                    <p id="summary">{{ formatDate "Jan 2, 2006" .PublishedAt }} - {{ .Summary }}</p>
+                    <p id="author">{{ .Author }} &bull; {{ .ReadingMinutes }} min read</p>
                 </article>
             </a>
             {{ end }}

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:dc="http://purl.org/dc/elements/1.1/">
+  <channel>
+    <title>Go - My Awesome Blog</title>
+    <link>https://example.com/tags/go</link>
+    <description>Posts tagged Go</description>
+    <atom:link href="https://example.com/tags/go.xml" rel="self" type="application/rss+xml"></atom:link>
+    <lastBuildDate>Sat, 10 May 2025 00:00:00 +0000</lastBuildDate>
+    <item>
+      <title>A Second Post</title>
+      <link>https://example.com/post/second-post</link>
+      <guid isPermaLink="true">https://example.com/post/second-post</guid>
+      <pubDate>Wed, 02 Apr 2025 00:00:00 +0000</pubDate>
+      <dc:creator>Kenton Vizdos</dc:creator>
+      <description>Shows ISO dates, Updated, list tags, aliases, and images.</description>
+      <content:encoded><![CDATA[<h2 id="images-need-alt-text">Images need alt text <a class="headerPermalink" href="https://example.com/post/second-post#images-need-alt-text">#</a></h2>
+<figure>
+<img src="https://example.com/assets/icon.jpg" alt="A screenshot of the example blog">
+</figure>
+<p>Links to <a href="https://example.com/post/An-Example-Post">the first post</a> and <a href="https://example.com/post/second-post#images-need-alt-text">this section</a> are made absolute in feeds.</p>
+<pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;"><code><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>fmt.<span style="color:#50fa7b">Println</span>(<span style="color:#f1fa8c">&#34;code isn&#39;t counted in the word count&#34;</span>)
+</span></span></code></pre>]]></content:encoded>
+      <category>Example Tag 1</category>
+      <category>Go</category>
+    </item>
+  </channel>
+</rss>

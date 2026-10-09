@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title>My Awesome Blog</title>
+  <subtitle>Notes on building things.</subtitle>
+  <id>https://example.com/</id>
+  <link href="https://example.com/atom.xml" rel="self" type="application/atom+xml"></link>
+  <link href="https://example.com/" rel="alternate" type="text/html"></link>
+  <updated>2025-05-10T00:00:00Z</updated>
+  <author>
+    <name>Your Name</name>
+  </author>
+  <entry>
+    <title>A Second Post</title>
+    <id>https://example.com/post/second-post</id>
+    <link href="https://example.com/post/second-post" rel="alternate" type="text/html"></link>
+    <published>2025-04-02T00:00:00Z</published>
+    <updated>2025-05-10T00:00:00Z</updated>
+    <author>
+      <name>Kenton Vizdos</name>
+    </author>
+    <summary>Shows ISO dates, Updated, list tags, aliases, and images.</summary>
+    <content type="html">&lt;h2 id=&#34;images-need-alt-text&#34;&gt;Images need alt text &lt;a class=&#34;headerPermalink&#34; href=&#34;https://example.com/post/second-post#images-need-alt-text&#34;&gt;#&lt;/a&gt;&lt;/h2&gt;&#xA;&lt;figure&gt;&#xA;&lt;img src=&#34;https://example.com/assets/icon.jpg&#34; alt=&#34;A screenshot of the example blog&#34;&gt;&#xA;&lt;/figure&gt;&#xA;&lt;p&gt;Links to &lt;a href=&#34;https://example.com/post/An-Example-Post&#34;&gt;the first post&lt;/a&gt; and &lt;a href=&#34;https://example.com/post/second-post#images-need-alt-text&#34;&gt;this section&lt;/a&gt; are made absolute in feeds.&lt;/p&gt;&#xA;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#282a36;&#34;&gt;&lt;code&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span style=&#34;white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt;1&lt;/span&gt;&lt;span&gt;fmt.&lt;span style=&#34;color:#50fa7b&#34;&gt;Println&lt;/span&gt;(&lt;span style=&#34;color:#f1fa8c&#34;&gt;&amp;#34;code isn&amp;#39;t counted in the word count&amp;#34;&lt;/span&gt;)&#xA;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;</content>
+    <category term="Example Tag 1"></category>
+    <category term="Go"></category>
+  </entry>
+  <entry>
+    <title>An Example- From the &amp;-! Demo</title>
+    <id>https://example.com/post/An-Example-Post</id>
+    <link href="https://example.com/post/An-Example-Post" rel="alternate" type="text/html"></link>
+    <published>2025-03-15T00:00:00Z</published>
+    <updated>2025-03-15T00:00:00Z</updated>
+    <author>
+      <name>Kenton Vizdos</name>
+    </author>
+    <summary>This is a demo post.</summary>
+    <content type="html">&lt;h2 id=&#34;your-first-heading-should-be-an-h2&#34;&gt;Your first heading should be an H2! &lt;a class=&#34;headerPermalink&#34; href=&#34;https://example.com/post/An-Example-Post#your-first-heading-should-be-an-h2&#34;&gt;#&lt;/a&gt;&lt;/h2&gt;&#xA;&lt;p&gt;The title of the post is dictated by the file name. Use &lt;code&gt;-&lt;/code&gt; in place of spaces.&lt;/p&gt;&#xA;&lt;h2 id=&#34;test-2&#34;&gt;Test 2 &lt;a class=&#34;headerPermalink&#34; href=&#34;https://example.com/post/An-Example-Post#test-2&#34;&gt;#&lt;/a&gt;&lt;/h2&gt;&#xA;&lt;div data-fence=&#34;0&#34; class=&#34;fence&#34;&gt;&#xA;&lt;p&gt;This is a fenced block.&lt;/p&gt;&#xA;&lt;/div&gt;&#xA;</content>
+    <category term="Example Tag 1"></category>
+    <category term="Example Tag 2"></category>
+  </entry>
+</feed>

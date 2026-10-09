@@ -14,6 +14,9 @@ var OgContent embed.FS
 //go:embed assets/*
 var AssetsContent embed.FS
 
+//go:embed static/*
+var StaticContent embed.FS
+
 //go:embed .github/*
 var GitHubContent embed.FS
 

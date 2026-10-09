@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:dc="http://purl.org/dc/elements/1.1/">
+  <channel>
+    <title>Example Tag 2 - My Awesome Blog</title>
+    <link>https://example.com/tags/example-tag-2</link>
+    <description>Posts tagged Example Tag 2</description>
+    <atom:link href="https://example.com/tags/example-tag-2.xml" rel="self" type="application/rss+xml"></atom:link>
+    <lastBuildDate>Sat, 15 Mar 2025 00:00:00 +0000</lastBuildDate>
+    <item>
+      <title>An Example- From the &amp;-! Demo</title>
+      <link>https://example.com/post/An-Example-Post</link>
+      <guid isPermaLink="true">https://example.com/post/An-Example-Post</guid>
+      <pubDate>Sat, 15 Mar 2025 00:00:00 +0000</pubDate>
+      <dc:creator>Kenton Vizdos</dc:creator>
+      <description>This is a demo post.</description>
+      <content:encoded><![CDATA[<h2 id="your-first-heading-should-be-an-h2">Your first heading should be an H2! <a class="headerPermalink" href="https://example.com/post/An-Example-Post#your-first-heading-should-be-an-h2">#</a></h2>
+<p>The title of the post is dictated by the file name. Use <code>-</code> in place of spaces.</p>
+<h2 id="test-2">Test 2 <a class="headerPermalink" href="https://example.com/post/An-Example-Post#test-2">#</a></h2>
+<div data-fence="0" class="fence">
+<p>This is a fenced block.</p>
+</div>
+]]></content:encoded>
+      <category>Example Tag 1</category>
+      <category>Example Tag 2</category>
+    </item>
+  </channel>
+</rss>

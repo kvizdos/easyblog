@@ -1,24 +1,18 @@
 <!doctype html>
 <html lang="en">
     <head>
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
-        <link rel="stylesheet" href="/assets/style.css" />
-
-        <title>{{ .Tag }} - EasyBlog Quick Start</title>
-        <meta name="description" content="REPLACE ME!!!" />
+        {{ template "head" . }}
     </head>
     <body>
         <header>
-            <h1>Tags!</h1>
+            <h1>Posts tagged {{ .Tag }}</h1>
         </header>
         <main>
-            <p>Tag Name: {{ .Tag }}</p>
             {{ range .Posts }}
             <a href="{{ .Slug }}">
                 <article>
                     <p id="title">{{ .Title }}</p>
-                    <p id="summary">{{ .Date }} - {{ .Summary }}</p>
+                    <p id="summary">{{ formatDate "Jan 2, 2006" .PublishedAt }} - {{ .Summary }}</p>
                     <p id="author">{{ .Author }}</p>
                 </article>
             </a>

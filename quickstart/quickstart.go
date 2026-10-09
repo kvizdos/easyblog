@@ -55,6 +55,7 @@ func Scaffold(targetDir string) error {
 		"posts":     embedded_example.PostsContent,
 		"og":        embedded_example.OgContent,
 		"assets":    embedded_example.AssetsContent,
+		"static":    embedded_example.StaticContent,
 		".github":   embedded_example.GitHubContent,
 	}
 

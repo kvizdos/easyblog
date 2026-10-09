@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:dc="http://purl.org/dc/elements/1.1/">
+  <channel>
+    <title>Example Tag 1 - My Awesome Blog</title>
+    <link>https://example.com/tags/example-tag-1</link>
+    <description>Posts tagged Example Tag 1</description>
+    <atom:link href="https://example.com/tags/example-tag-1.xml" rel="self" type="application/rss+xml"></atom:link>
+    <lastBuildDate>Sat, 10 May 2025 00:00:00 +0000</lastBuildDate>
+    <item>
+      <title>A Second Post</title>
+      <link>https://example.com/post/second-post</link>
+      <guid isPermaLink="true">https://example.com/post/second-post</guid>
+      <pubDate>Wed, 02 Apr 2025 00:00:00 +0000</pubDate>
+      <dc:creator>Kenton Vizdos</dc:creator>
+      <description>Shows ISO dates, Updated, list tags, aliases, and images.</description>
+      <content:encoded><![CDATA[<h2 id="images-need-alt-text">Images need alt text <a class="headerPermalink" href="https://example.com/post/second-post#images-need-alt-text">#</a></h2>
+<figure>
+<img src="https://example.com/assets/icon.jpg" alt="A screenshot of the example blog">
+</figure>
+<p>Links to <a href="https://example.com/post/An-Example-Post">the first post</a> and <a href="https://example.com/post/second-post#images-need-alt-text">this section</a> are made absolute in feeds.</p>
+<pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;"><code><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>fmt.<span style="color:#50fa7b">Println</span>(<span style="color:#f1fa8c">&#34;code isn&#39;t counted in the word count&#34;</span>)
+</span></span></code></pre>]]></content:encoded>
+      <category>Example Tag 1</category>
+      <category>Go</category>
+    </item>
+    <item>
+      <title>An Example- From the &amp;-! Demo</title>
+      <link>https://example.com/post/An-Example-Post</link>
+      <guid isPermaLink="true">https://example.com/post/An-Example-Post</guid>
+      <pubDate>Sat, 15 Mar 2025 00:00:00 +0000</pubDate>
+      <dc:creator>Kenton Vizdos</dc:creator>
+      <description>This is a demo post.</description>
+      <content:encoded><![CDATA[<h2 id="your-first-heading-should-be-an-h2">Your first heading should be an H2! <a class="headerPermalink" href="https://example.com/post/An-Example-Post#your-first-heading-should-be-an-h2">#</a></h2>
+<p>The title of the post is dictated by the file name. Use <code>-</code> in place of spaces.</p>
+<h2 id="test-2">Test 2 <a class="headerPermalink" href="https://example.com/post/An-Example-Post#test-2">#</a></h2>
+<div data-fence="0" class="fence">
+<p>This is a fenced block.</p>
+</div>
+]]></content:encoded>
+      <category>Example Tag 1</category>
+      <category>Example Tag 2</category>
+    </item>
+  </channel>
+</rss>
